@@ -1,30 +1,13 @@
 import BlogUser from "./BlogUser";
 import ResponseButtons from "./ResponseButton";
+import blogSlice from "./blogSlice";
+import {useSelector } from "react-redux/es/hooks/useSelector";
+import { selectAllBlogs } from "./blogSlice";
 
-const blogs = [
-  {
-    id: "1",
-    title: "Basic Redux-Toolkit",
-    body:
-      "The Redux Toolkit package is intended to be the standard way to write Redux logic. It was originally created to help address three common concerns about Redux",
-    response: {
-      like: 0,
-      unlike: 0,
-    },
-  },
-  {
-    id: "2",
-    title: "React Redux",
-    body:
-      "React Redux is maintained by the Redux team, and kept up-to-date with the latest APIs from Redux and React.",
-    response: {
-      like: 0,
-      unlike: 0,
-    },
-  },
-];
+
 
 const BlogsList = () => {
+    const blogs = useSelector(selectAllBlogs)
   const renderedBlogs = blogs.map((blog) => (
     <div key={blog.id} className="card">
       <div className="card-body">
