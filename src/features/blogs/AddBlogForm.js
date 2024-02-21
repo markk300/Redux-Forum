@@ -1,4 +1,8 @@
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { addBlog } from "./blogSlice";
+import { selectAllUsers } from "../users/userSlice";
+
 
 const initialState = {
   title: "",
@@ -7,9 +11,14 @@ const initialState = {
 };
 
 const AddBlogForm = () => {
+  const users = useSelector(selectAllUsers)
+  const dispatch = useDispatch();
   const [form, setForm] = useState(initialState);
 
   const { title, body, userId } = form;
+  const userOptions = users.map((user)=>(
+    <option value={user.id} key={user.id}>{user.name}</option>
+      ))
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
@@ -22,7 +31,12 @@ const AddBlogForm = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    if (title && body) {
+      dispatch(addBlog(title,body,userId));
+      setForm({title:'',body:'', userId:''})
+    }
   };
+  const isFill = Boolean(title) && Boolean(body) 
 
   return (
     <section>
@@ -30,8 +44,9 @@ const AddBlogForm = () => {
       <form onSubmit={onSubmit}>
         <label htmlFor="userId">User:</label>
         <select id="userId" value={userId} onChange={handleUser}>
-          <option value=""></option>
+          {userOptions}
         </select>
+        
         <label htmlFor="title">Title:</label>
         <input
           type="text"
@@ -42,7 +57,7 @@ const AddBlogForm = () => {
         />
         <label htmlFor="body">Body:</label>
         <textarea id="body" name="body" value={body} onChange={handleChange} />
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary" disabled={!isFill}>
           Submit
         </button>
       </form>
