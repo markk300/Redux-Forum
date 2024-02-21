@@ -16,7 +16,7 @@ const BlogsList = () => {
         <p className="lead">
           <BlogUser userId={blog.userId} />
         </p>
-        <ResponseButtons />
+        <ResponseButtons blog={blog} />
       </div>
     </div>
   ));

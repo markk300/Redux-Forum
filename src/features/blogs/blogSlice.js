@@ -35,13 +35,21 @@ const blogSlice = createSlice({
             id: nanoid(),
             title,
             body,
-            userId
+            userId,
+            response: { like: 0, unlike: 0 },
           },
         };
       },
     },
+    responseAdded(state, action) {
+      const { blogId, response } = action.payload;
+      const existingBlog = state.find((blog) => blog.id === blogId);
+      if (existingBlog) {
+        existingBlog.response[response]++;
+      }
+    },
   },
 });
 export const selectAllBlogs = (state) => state.blogs;
-export const { addBlog } = blogSlice.actions;
+export const { addBlog, responseAdded } = blogSlice.actions;
 export default blogSlice.reducer;

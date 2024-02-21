@@ -1,13 +1,17 @@
+import { useDispatch,useSelector } from "react-redux";
+import { responseAdded } from "./blogSlice";
+
 const responseEmoji = {
     like: "👍",
     unlike: "👎",
   };
   
-  const ResponseButtons = () => {
+  const ResponseButtons = ({blog}) => {
+    const dispatch = useDispatch()
     const responseButtons = Object.entries(responseEmoji).map(([name, emoji]) => {
       return (
-        <button key={name} type="button" className="btn btn-light mx-2">
-          {emoji}
+        <button key={name} type="button" className="btn btn-light mx-2" onClick={()=>dispatch(responseAdded({blogId: blog.id,response: name}))}>
+          {emoji}  {blog.response[name]}
         </button>
       );
     });
